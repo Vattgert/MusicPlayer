@@ -1,6 +1,7 @@
 package vattgert.player.musicplayer.di;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
 import javax.inject.Singleton;
@@ -21,5 +22,12 @@ public class AppModule {
     @Singleton
     Context provideContext(){
         return context;
+    }
+
+    @Provides
+    @NonNull
+    @Singleton
+    Resources provideResources(Context context){
+        return context.getResources();
     }
 }

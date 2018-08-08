@@ -35,9 +35,6 @@ public class LibraryActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
 
-
-    private MusicDataSource musicDataSource;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

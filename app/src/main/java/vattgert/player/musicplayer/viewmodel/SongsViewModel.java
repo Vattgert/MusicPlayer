@@ -34,7 +34,9 @@ public class SongsViewModel extends ViewModel{
         if(songs == null) {
             songs = new MutableLiveData<>();
             loadSongs();
+            Log.wtf("MusicPlayer", "SongLiveData is null. Retrieve from repository");
         }
+        Log.wtf("MusicPlayer", "Return SongLiveData");
         return songs;
     }
 
@@ -48,7 +50,7 @@ public class SongsViewModel extends ViewModel{
 
     @Override
     protected void onCleared() {
-        Log.wtf("MusicPlayer", "On cleared called");
+        Log.wtf("MusicPlayer", "Songs ViewModel onClear");
         compositeDisposable.clear();
     }
 }

@@ -38,7 +38,7 @@ public class SongsFragment extends Fragment {
     private SongAdapter songAdapter;
 
     public SongsFragment() {
-        // Required empty public constructor
+
     }
 
     public static SongsFragment newInstance() {
@@ -48,8 +48,15 @@ public class SongsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        songAdapter = new SongAdapter(new ArrayList<>(0));
         MusicPlayerApplication.getComponent().inject(this);
+
+        songAdapter = new SongAdapter(new ArrayList<>(0));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.wtf("MusicPlayer", "SongFragment resume");
         SongsViewModel songsViewModel = ViewModelProviders.of(this).get(SongsViewModel.class);
         LiveData<List<Song>> liveData = songsViewModel.getSongs();
         liveData.observe(this, songs -> songAdapter.setData(songs));
@@ -71,7 +78,6 @@ public class SongsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.wtf("MusicPlayer", "Song fragment OnDestroyView");
     }
 
     public static class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{

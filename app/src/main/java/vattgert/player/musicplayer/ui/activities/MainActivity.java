@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_library:
-                navigationFragment = LibraryFragment.newInstance("","");
+                navigationFragment = LibraryFragment.newInstance();
                 break;
             case R.id.nav_playlist:
                 navigationFragment = PlaylistsFragment.newInstance("","");

@@ -1,6 +1,10 @@
 package vattgert.player.musicplayer.ui.fragments;
 
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,6 +38,7 @@ import vattgert.player.musicplayer.data.MusicDataSource;
 import vattgert.player.musicplayer.data.models.Album;
 import vattgert.player.musicplayer.interfaces.ItemDetails;
 import vattgert.player.musicplayer.utils.Utils;
+import vattgert.player.musicplayer.viewmodel.AlbumsViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,11 +46,13 @@ import vattgert.player.musicplayer.utils.Utils;
  * create an instance of this fragment.
  */
 public class AlbumsFragment extends Fragment implements ItemDetails.AlbumItemDetails {
-    @BindView(R.id.gridViewAlbums) GridView gridView;
-    private AlbumAdapter albumAdapter;
+    @BindView(R.id.gridViewAlbums)
+    GridView gridView;
 
     @Inject
     MusicDataSource musicDataSource;
+
+    private AlbumAdapter albumAdapter;
 
     public AlbumsFragment() {
 
@@ -59,7 +66,23 @@ public class AlbumsFragment extends Fragment implements ItemDetails.AlbumItemDet
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MusicPlayerApplication.getComponent().inject(this);
+
         albumAdapter = new AlbumAdapter(new ArrayList<>(0), this.getContext());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.wtf("MusicPlayer", "AlbumFragment resume");
+        AlbumsViewModel albumsViewModel = ViewModelProviders.of(this).get(AlbumsViewModel.class);
+        LiveData<List<Album>> albumLiveData = albumsViewModel.getAlbums();
+        albumLiveData.observe(this, albumList -> albumAdapter.setData(albumList));
     }
 
     @Override
@@ -68,17 +91,6 @@ public class AlbumsFragment extends Fragment implements ItemDetails.AlbumItemDet
         View view = inflater.inflate(R.layout.fragment_albums, container, false);
         ButterKnife.bind(this, view);
         gridView.setAdapter(albumAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Album album = albumAdapter.getItem(position);
-                Log.wtf("MusicPlayer", album.getAlbumArt());
-            }
-        });
-        musicDataSource.getAlbums()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(albumList -> albumAdapter.setData(albumList));
         return view;
     }
 

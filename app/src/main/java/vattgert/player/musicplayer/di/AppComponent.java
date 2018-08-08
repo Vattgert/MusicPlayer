@@ -8,6 +8,7 @@ import vattgert.player.musicplayer.ui.fragments.AlbumsFragment;
 import vattgert.player.musicplayer.ui.fragments.ArtistsFragment;
 import vattgert.player.musicplayer.ui.fragments.SongsFragment;
 import vattgert.player.musicplayer.viewmodel.AlbumsViewModel;
+import vattgert.player.musicplayer.viewmodel.ArtistsViewModel;
 import vattgert.player.musicplayer.viewmodel.SongsViewModel;
 
 @Component (modules = {AppModule.class, DataModule.class, SchedulerModule.class, LastFmApiModule.class})
@@ -24,4 +25,5 @@ public interface AppComponent {
     //Injection to ViewModels
     void inject(SongsViewModel songsViewModel);
     void inject(AlbumsViewModel albumsViewModel);
+    void inject(ArtistsViewModel artistsViewModel);
 }

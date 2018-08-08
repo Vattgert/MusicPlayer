@@ -30,14 +30,13 @@ public class LibraryFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static LibraryFragment newInstance(String param1, String param2) {
+    public static LibraryFragment newInstance() {
         return new LibraryFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mSectionsPagerAdapter = new SectionsPagerAdapter(((AppCompatActivity)getActivity()).getSupportFragmentManager());
     }
 

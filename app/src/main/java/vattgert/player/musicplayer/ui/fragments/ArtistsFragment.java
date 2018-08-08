@@ -1,11 +1,14 @@
 package vattgert.player.musicplayer.ui.fragments;
 
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ import vattgert.player.musicplayer.data.MusicDataSource;
 import vattgert.player.musicplayer.data.lastfm.MusicPlayerLastFmService;
 import vattgert.player.musicplayer.data.models.Artist;
 import vattgert.player.musicplayer.utils.SchedulerProvider;
+import vattgert.player.musicplayer.viewmodel.ArtistsViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +55,7 @@ public class ArtistsFragment extends Fragment {
    @Inject MusicPlayerLastFmService lastFmService;
 
     public ArtistsFragment() {
-        // Required empty public constructor
+
     }
 
     public static ArtistsFragment newInstance() {
@@ -67,19 +71,27 @@ public class ArtistsFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.wtf("MusicPlayer", "ArtistFragment resume");
+        ArtistsViewModel artistsViewModel = ViewModelProviders.of(this).get(ArtistsViewModel.class);
+        LiveData<List<Artist>> artistLiveData = artistsViewModel.getArtists();
+        artistLiveData.observe(this, artists -> artistAdapter.setData(artists));
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_artists, container, false);
         ButterKnife.bind(this, view);
 
         artistGridView.setAdapter(artistAdapter);
-
-        musicDataSource.getArtists()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(artists -> {
-                    artistAdapter.setData(artists);
-                });
         return view;
     }
 

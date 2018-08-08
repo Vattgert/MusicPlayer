@@ -42,8 +42,10 @@ public class AlbumsViewModel extends ViewModel{
     public MutableLiveData<Album> getAlbum(String albumId) {
         if(album == null) {
             album = new MutableLiveData<>();
+            Log.wtf("MusicPlayer", "AlbumLiveData is null. Retrieve from repository");
             loadAlbum(albumId);
         }
+        Log.wtf("MusicPlayer", "Return AlbumLiveData");
         return album;
     }
 
@@ -65,8 +67,7 @@ public class AlbumsViewModel extends ViewModel{
 
     @Override
     protected void onCleared() {
-        super.onCleared();
-        Log.wtf("MusicPlayer", "Album View Model onClear");
+        Log.wtf("MusicPlayer", "Albums ViewModel onClear");
         compositeDisposable.clear();
     }
 }
