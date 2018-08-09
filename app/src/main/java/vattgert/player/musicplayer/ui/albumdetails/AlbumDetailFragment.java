@@ -1,4 +1,4 @@
-package vattgert.player.musicplayer.ui.fragments;
+package vattgert.player.musicplayer.ui.albumdetails;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

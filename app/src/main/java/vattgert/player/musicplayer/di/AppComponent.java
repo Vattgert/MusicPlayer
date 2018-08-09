@@ -4,12 +4,12 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import vattgert.player.musicplayer.data.MusicDataSource;
-import vattgert.player.musicplayer.ui.fragments.AlbumsFragment;
-import vattgert.player.musicplayer.ui.fragments.ArtistsFragment;
-import vattgert.player.musicplayer.ui.fragments.SongsFragment;
+import vattgert.player.musicplayer.ui.songs.SongsPresenter;
+import vattgert.player.musicplayer.ui.albums.AlbumsFragment;
+import vattgert.player.musicplayer.ui.artists.ArtistsFragment;
+import vattgert.player.musicplayer.ui.songs.SongsFragment;
 import vattgert.player.musicplayer.viewmodel.AlbumsViewModel;
 import vattgert.player.musicplayer.viewmodel.ArtistsViewModel;
-import vattgert.player.musicplayer.viewmodel.SongsViewModel;
 
 @Component (modules = {AppModule.class, DataModule.class, SchedulerModule.class, LastFmApiModule.class})
 @Singleton
@@ -23,7 +23,7 @@ public interface AppComponent {
     void inject(ArtistsFragment fragment);
 
     //Injection to ViewModels
-    void inject(SongsViewModel songsViewModel);
+    void inject(SongsPresenter songsPresenter);
     void inject(AlbumsViewModel albumsViewModel);
     void inject(ArtistsViewModel artistsViewModel);
 }

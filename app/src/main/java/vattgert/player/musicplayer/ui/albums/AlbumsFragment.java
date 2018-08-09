@@ -1,20 +1,15 @@
-package vattgert.player.musicplayer.ui.fragments;
+package vattgert.player.musicplayer.ui.albums;
 
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -30,13 +25,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import vattgert.player.musicplayer.MusicPlayerApplication;
 import vattgert.player.musicplayer.R;
 import vattgert.player.musicplayer.data.MusicDataSource;
 import vattgert.player.musicplayer.data.models.Album;
 import vattgert.player.musicplayer.interfaces.ItemDetails;
+import vattgert.player.musicplayer.ui.custom.ViewLifecycleFragment;
+import vattgert.player.musicplayer.ui.albumdetails.AlbumDetailFragment;
 import vattgert.player.musicplayer.utils.Utils;
 import vattgert.player.musicplayer.viewmodel.AlbumsViewModel;
 
@@ -45,7 +40,7 @@ import vattgert.player.musicplayer.viewmodel.AlbumsViewModel;
  * Use the {@link AlbumsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AlbumsFragment extends Fragment implements ItemDetails.AlbumItemDetails {
+public class AlbumsFragment extends ViewLifecycleFragment implements ItemDetails.AlbumItemDetails {
     @BindView(R.id.gridViewAlbums)
     GridView gridView;
 
@@ -71,18 +66,8 @@ public class AlbumsFragment extends Fragment implements ItemDetails.AlbumItemDet
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.wtf("MusicPlayer", "AlbumFragment resume");
-        AlbumsViewModel albumsViewModel = ViewModelProviders.of(this).get(AlbumsViewModel.class);
-        LiveData<List<Album>> albumLiveData = albumsViewModel.getAlbums();
-        albumLiveData.observe(this, albumList -> albumAdapter.setData(albumList));
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

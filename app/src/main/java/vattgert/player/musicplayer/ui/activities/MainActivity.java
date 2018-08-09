@@ -1,8 +1,9 @@
 package vattgert.player.musicplayer.ui.activities;
 
 import android.os.Bundle;
-import android.app.Fragment;
-import android.app.FragmentManager;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,7 +16,7 @@ import android.view.MenuItem;
 
 import vattgert.player.musicplayer.R;
 import vattgert.player.musicplayer.ui.fragments.LibraryFragment;
-import vattgert.player.musicplayer.ui.fragments.PlaylistsFragment;
+import vattgert.player.musicplayer.ui.playlists.PlaylistsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void switchFragment(Fragment fragment){
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.navigationContent, fragment).commit();
     }
 }

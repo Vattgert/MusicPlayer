@@ -1,14 +1,12 @@
-package vattgert.player.musicplayer.ui.fragments;
+package vattgert.player.musicplayer.ui.artists;
 
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +28,8 @@ import butterknife.ButterKnife;
 import vattgert.player.musicplayer.MusicPlayerApplication;
 import vattgert.player.musicplayer.R;
 import vattgert.player.musicplayer.data.MusicDataSource;
-import vattgert.player.musicplayer.data.lastfm.MusicPlayerLastFmService;
 import vattgert.player.musicplayer.data.models.Artist;
+import vattgert.player.musicplayer.ui.custom.ViewLifecycleFragment;
 import vattgert.player.musicplayer.utils.SchedulerProvider;
 import vattgert.player.musicplayer.viewmodel.ArtistsViewModel;
 
@@ -40,7 +38,7 @@ import vattgert.player.musicplayer.viewmodel.ArtistsViewModel;
  * Use the {@link ArtistsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ArtistsFragment extends Fragment {
+public class ArtistsFragment extends ViewLifecycleFragment {
     @BindView(R.id.gridViewArtists)
     GridView artistGridView;
 
@@ -51,8 +49,6 @@ public class ArtistsFragment extends Fragment {
 
     @Inject
     SchedulerProvider schedulerProvider;
-
-   @Inject MusicPlayerLastFmService lastFmService;
 
     public ArtistsFragment() {
 
@@ -71,18 +67,8 @@ public class ArtistsFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.wtf("MusicPlayer", "ArtistFragment resume");
-        ArtistsViewModel artistsViewModel = ViewModelProviders.of(this).get(ArtistsViewModel.class);
-        LiveData<List<Artist>> artistLiveData = artistsViewModel.getArtists();
-        artistLiveData.observe(this, artists -> artistAdapter.setData(artists));
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -93,6 +79,11 @@ public class ArtistsFragment extends Fragment {
 
         artistGridView.setAdapter(artistAdapter);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     public static class ArtistAdapter extends BaseAdapter {
@@ -168,5 +159,4 @@ public class ArtistsFragment extends Fragment {
             }
         }
     }
-
 }

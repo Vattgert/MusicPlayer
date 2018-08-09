@@ -27,7 +27,7 @@ public class SongsViewModel extends ViewModel{
     private MutableLiveData<List<Song>> songs;
 
     public SongsViewModel() {
-        MusicPlayerApplication.getComponent().inject(this);
+
     }
 
     public MutableLiveData<List<Song>> getSongs() {

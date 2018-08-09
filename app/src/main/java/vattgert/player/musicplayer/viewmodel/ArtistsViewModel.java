@@ -50,7 +50,7 @@ public class ArtistsViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
-        Log.wtf("MusicPlayer", "Artist View Model onClear");
+        Log.wtf("MusicPlayer", "Artist BaseView Model onClear");
         compositeDisposable.clear();
     }
 }

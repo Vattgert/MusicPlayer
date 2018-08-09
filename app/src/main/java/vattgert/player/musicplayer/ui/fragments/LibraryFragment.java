@@ -8,20 +8,22 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import vattgert.player.musicplayer.R;
+import vattgert.player.musicplayer.ui.albums.AlbumsFragment;
+import vattgert.player.musicplayer.ui.artists.ArtistsFragment;
+import vattgert.player.musicplayer.ui.custom.ViewLifecycleFragment;
+import vattgert.player.musicplayer.ui.songs.SongsFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link LibraryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LibraryFragment extends Fragment {
+public class LibraryFragment extends ViewLifecycleFragment {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private FragmentManager fragmentManager;
