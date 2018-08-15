@@ -8,11 +8,11 @@ import vattgert.player.musicplayer.Playback;
 import vattgert.player.musicplayer.data.models.Song;
 
 public interface SongsContract {
-    interface Presenter extends BasePresenter, Playback {
+    interface Presenter extends BasePresenter<View>{
         void getSongs();
     }
 
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView {
         void showSongs(List<Song> songs);
         void showNoSongs();
     }

@@ -1,7 +1,6 @@
 package vattgert.player.musicplayer.ui.artists;
 
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -27,28 +26,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import vattgert.player.musicplayer.MusicPlayerApplication;
 import vattgert.player.musicplayer.R;
-import vattgert.player.musicplayer.data.MusicDataSource;
 import vattgert.player.musicplayer.data.models.Artist;
-import vattgert.player.musicplayer.ui.custom.ViewLifecycleFragment;
-import vattgert.player.musicplayer.utils.SchedulerProvider;
-import vattgert.player.musicplayer.viewmodel.ArtistsViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ArtistsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ArtistsFragment extends ViewLifecycleFragment {
+public class ArtistsFragment extends Fragment implements ArtistContract.View{
+    private ArtistsPresenter presenter;
+
     @BindView(R.id.gridViewArtists)
     GridView artistGridView;
 
     ArtistAdapter artistAdapter;
-
-    @Inject
-    MusicDataSource musicDataSource;
-
-    @Inject
-    SchedulerProvider schedulerProvider;
 
     public ArtistsFragment() {
 
@@ -67,8 +53,16 @@ public class ArtistsFragment extends ViewLifecycleFragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onResume() {
+        super.onResume();
+        presenter.bind(this);
+        presenter.getArtists();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.unbind();
     }
 
     @Override
@@ -84,6 +78,21 @@ public class ArtistsFragment extends ViewLifecycleFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void showArtist(List<Artist> artists) {
+        artistAdapter.setData(artists);
+    }
+
+    @Override
+    public void showNoArtist() {
+
+    }
+
+    @Inject
+    public void setPresenter(ArtistsPresenter presenter){
+        this.presenter = presenter;
     }
 
     public static class ArtistAdapter extends BaseAdapter {

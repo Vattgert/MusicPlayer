@@ -33,7 +33,7 @@
         </activity>
 
         <service
-            android:name=".services.PlaybackService"
+            android:name=".PlaybackService"
             android:enabled="true"
             android:exported="true"></service>
     </application>

@@ -1,12 +1,9 @@
 package vattgert.player.musicplayer.ui.albums;
 
-
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,27 +24,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import vattgert.player.musicplayer.MusicPlayerApplication;
 import vattgert.player.musicplayer.R;
-import vattgert.player.musicplayer.data.MusicDataSource;
 import vattgert.player.musicplayer.data.models.Album;
-import vattgert.player.musicplayer.interfaces.ItemDetails;
-import vattgert.player.musicplayer.ui.custom.ViewLifecycleFragment;
-import vattgert.player.musicplayer.ui.albumdetails.AlbumDetailFragment;
 import vattgert.player.musicplayer.utils.Utils;
-import vattgert.player.musicplayer.viewmodel.AlbumsViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AlbumsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AlbumsFragment extends ViewLifecycleFragment implements ItemDetails.AlbumItemDetails {
-    @BindView(R.id.gridViewAlbums)
-    GridView gridView;
-
-    @Inject
-    MusicDataSource musicDataSource;
-
+public class AlbumsFragment extends Fragment implements AlbumsContract.View {
     private AlbumAdapter albumAdapter;
+    private AlbumsPresenter presenter;
+
+    @BindView(R.id.gridViewAlbums) GridView gridView;
+    @BindView(R.id.noAlbumsView) View noAlbumsView;
 
     public AlbumsFragment() {
 
@@ -66,8 +56,16 @@ public class AlbumsFragment extends ViewLifecycleFragment implements ItemDetails
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onResume() {
+        super.onResume();
+        presenter.bind(this);
+        presenter.getAlbums();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.unbind();
     }
 
     @Override
@@ -80,11 +78,19 @@ public class AlbumsFragment extends ViewLifecycleFragment implements ItemDetails
     }
 
     @Override
-    public void openAlbumDetails(String albumId) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(AlbumDetailFragment.newInstance(), "AlbumDetailFragment").
-                addToBackStack(null).
-                commit();
+    public void showAlbums(List<Album> albums) {
+        noAlbumsView.setVisibility(View.GONE);
+        albumAdapter.setData(albums);
+    }
+
+    @Override
+    public void showNoAlbums() {
+        noAlbumsView.setVisibility(View.VISIBLE);
+    }
+
+    @Inject
+    public void setPresenter(AlbumsPresenter albumsPresenter){
+        presenter = albumsPresenter;
     }
 
     public static class AlbumAdapter extends BaseAdapter{

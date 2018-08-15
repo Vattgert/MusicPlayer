@@ -16,23 +16,20 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vattgert.player.musicplayer.MusicPlayerApplication;
 import vattgert.player.musicplayer.R;
 import vattgert.player.musicplayer.data.models.Song;
-import vattgert.player.musicplayer.viewmodel.SongsViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SongsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SongsFragment extends Fragment {
-    @BindView(R.id.recyclerViewSongs)
-    RecyclerView songRecyclerView;
-
+public class SongsFragment extends Fragment implements SongsContract.View {
+    private SongsPresenter presenter;
     private SongAdapter songAdapter;
+
+    @BindView(R.id.recyclerViewSongs) RecyclerView songRecyclerView;
+    @BindView(R.id.noSongsView) View noSongsView;
 
     public SongsFragment() {
 
@@ -51,14 +48,21 @@ public class SongsFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onResume() {
+        super.onResume();
+        presenter.bind(this);
+        presenter.getSongs();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.unbind();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_songs, container, false);
         ButterKnife.bind(this, view);
 
@@ -66,6 +70,22 @@ public class SongsFragment extends Fragment {
         songRecyclerView.setLayoutManager(layoutManager);
         songRecyclerView.setAdapter(songAdapter);
         return view;
+    }
+
+    @Inject
+    public void setPresenter(SongsPresenter presenter){
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void showSongs(List<Song> songs) {
+        noSongsView.setVisibility(View.GONE);
+        songAdapter.setData(songs);
+    }
+
+    @Override
+    public void showNoSongs() {
+        noSongsView.setVisibility(View.VISIBLE);
     }
 
     public static class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{

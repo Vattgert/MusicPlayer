@@ -29,4 +29,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="title_activity_test">TestActivity</string>
+
+    <!-- Messages -->
+    <string name="message_songs_absence">Аудиозаписи отсутствуют</string>
 </resources>

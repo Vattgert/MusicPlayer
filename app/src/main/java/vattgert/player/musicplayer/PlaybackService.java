@@ -1,4 +1,4 @@
-package vattgert.player.musicplayer.services;
+package vattgert.player.musicplayer;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -43,6 +43,11 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
         mediaPlayer = new MediaPlayer();
         initializeMediaPlayer();
         position = 0;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     private void initializeMediaPlayer(){
@@ -171,6 +176,14 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
     @Override
     public void setShuffle() {
         shuffle = !shuffle;
+    }
+
+    public void clearQueue(){
+        songs.clear();
+    }
+
+    public void destructQueue(){
+        songs = null;
     }
 
     private long getSongId(Song song){
