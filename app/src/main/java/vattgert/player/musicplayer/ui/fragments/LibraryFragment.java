@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Objects;
+
 import vattgert.player.musicplayer.R;
 import vattgert.player.musicplayer.ui.albums.AlbumsFragment;
 import vattgert.player.musicplayer.ui.artists.ArtistsFragment;
@@ -41,7 +43,9 @@ public class LibraryFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager());
+        Log.wtf("MusicPlayer", "LibraryFragment create");
+        FragmentManager fragmentManager = getChildFragmentManager();
+        mSectionsPagerAdapter = new SectionsPagerAdapter(fragmentManager);
     }
 
     @Override
@@ -50,8 +54,6 @@ public class LibraryFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_library, container, false);
 
         TabLayout tabLayout = view.findViewById(R.id.library_tabs);
-        //Toolbar toolbar = view.findViewById(R.id.library_toolbar);
-        //((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         mViewPager = view.findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -60,7 +62,7 @@ public class LibraryFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -72,6 +74,7 @@ public class LibraryFragment extends android.support.v4.app.Fragment {
             switch(position)
             {
                 case 0:
+                    Log.wtf("MusicPlayer", "ViewPager position 0");
                     fragment =  SongsFragment.newInstance();
                     break;
                 case 1:
@@ -86,7 +89,6 @@ public class LibraryFragment extends android.support.v4.app.Fragment {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 3;
         }
     }

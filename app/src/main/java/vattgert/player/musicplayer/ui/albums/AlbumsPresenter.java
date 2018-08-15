@@ -1,5 +1,6 @@
 package vattgert.player.musicplayer.ui.albums;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.List;
@@ -41,15 +42,18 @@ public class AlbumsPresenter extends AbstractPresenter implements AlbumsContract
     }
 
     @Override
+    public void openAlbumDetail(@NonNull Album album) {
+
+    }
+
+    @Override
     public void bind(AlbumsContract.View view) {
-        Log.wtf("MusicPlayer", "AlbumsView bind");
         this.view = view;
     }
 
     @Override
     public void unbind() {
         getCompositeDisposable().clear();
-        Log.wtf("MusicPlayer", "AlbumsView unbind");
         view = null;
     }
 

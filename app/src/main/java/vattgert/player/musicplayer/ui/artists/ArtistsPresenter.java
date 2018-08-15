@@ -31,6 +31,7 @@ public class ArtistsPresenter extends AbstractPresenter implements ArtistContrac
                 .observeOn(schedulerProvider.ui())
                 .subscribe(artists -> {
                     if(view != null){
+                        Log.wtf("MusicPlayer", "Retrieve artist");
                         populateArtists(artists);
                     }
                 }, throwable -> {

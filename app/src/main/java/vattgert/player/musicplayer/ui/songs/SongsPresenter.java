@@ -33,6 +33,7 @@ public class SongsPresenter extends AbstractPresenter implements SongsContract.P
                 .observeOn(schedulerProvider.ui())
                 .subscribe(songs -> {
                     if(view != null){
+                        Log.wtf("MusicPlayer", "Retrieve songs");
                         populateSongs(songs);
                     }
                 }, throwable -> {

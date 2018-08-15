@@ -32,4 +32,7 @@
 
     <!-- Messages -->
     <string name="message_songs_absence">Аудиозаписи отсутствуют</string>
+
+    <!--Test-->
+    <string name="lorem">Duis in ante sed neque varius accumsan. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum non ex convallis, placerat magna id, cursus ex. Phasellus eget elit vel enim sagittis finibus a et nulla. Mauris hendrerit mauris a erat hendrerit, id venenatis lectus dapibus. Ut dignissim nibh nunc, at vestibulum nunc faucibus in. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed auctor ante eget vehicula tincidunt. Integer sollicitudin sodales est, sit amet accumsan justo. Duis semper, diam quis interdum pellentesque, augue sem ultrices velit, nec tristique mauris lectus vel erat. Ut sodales sagittis neque, eget rutrum lorem finibus quis. Nunc ut ante ac sapien dignissim lobortis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis congue ipsum ac quam condimentum, sit amet eleifend nisi luctus. Fusce eu commodo velit.</string>
 </resources>

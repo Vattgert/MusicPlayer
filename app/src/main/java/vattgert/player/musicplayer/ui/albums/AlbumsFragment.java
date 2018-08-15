@@ -2,8 +2,10 @@ package vattgert.player.musicplayer.ui.albums;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import butterknife.ButterKnife;
 import vattgert.player.musicplayer.MusicPlayerApplication;
 import vattgert.player.musicplayer.R;
 import vattgert.player.musicplayer.data.models.Album;
+import vattgert.player.musicplayer.ui.albumdetails.AlbumDetailFragment;
 import vattgert.player.musicplayer.utils.Utils;
 
 /**
@@ -52,7 +55,8 @@ public class AlbumsFragment extends Fragment implements AlbumsContract.View {
         super.onCreate(savedInstanceState);
         MusicPlayerApplication.getComponent().inject(this);
 
-        albumAdapter = new AlbumAdapter(new ArrayList<>(0), this.getContext());
+        albumAdapter = new AlbumAdapter(new ArrayList<>(0), this.getContext(),
+                albumListener);
     }
 
     @Override
@@ -88,6 +92,14 @@ public class AlbumsFragment extends Fragment implements AlbumsContract.View {
         noAlbumsView.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void showAlbumDetail() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        AlbumDetailFragment albumDetailFragment = AlbumDetailFragment.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.navigationContent, albumDetailFragment)
+                .addToBackStack(null).commit();
+    }
+
     @Inject
     public void setPresenter(AlbumsPresenter albumsPresenter){
         presenter = albumsPresenter;
@@ -96,10 +108,12 @@ public class AlbumsFragment extends Fragment implements AlbumsContract.View {
     public static class AlbumAdapter extends BaseAdapter{
         private List<Album> albumList;
         private LayoutInflater layoutInflater;
+        private AlbumListener albumListener;
 
-        public AlbumAdapter(List<Album> albumList, Context context){
+        public AlbumAdapter(List<Album> albumList, Context context, AlbumListener albumListener){
             this.albumList = albumList;
             layoutInflater = LayoutInflater.from(context);
+            this.albumListener = albumListener;
         }
 
         @Override
@@ -139,13 +153,14 @@ public class AlbumsFragment extends Fragment implements AlbumsContract.View {
             return convertView;
         }
 
-        public static class ViewHolder{
+        public class ViewHolder{
             @BindView(R.id.imageViewAlbumArt) ImageView albumArtImageView;
             @BindView(R.id.linearLayoutAlbum) LinearLayout linearLayoutAlbum;
             @BindView(R.id.textViewAlbumTitle) TextView albumTitleTextView;
             @BindView(R.id.textViewAlbumArtist) TextView albumArtistTextView;
 
             public ViewHolder(View view){
+                view.setOnClickListener(__ -> albumListener.openAlbumDetails());
                 ButterKnife.bind(this, view);
             }
 
@@ -159,6 +174,11 @@ public class AlbumsFragment extends Fragment implements AlbumsContract.View {
         }
     }
 
+    interface AlbumListener{
+        void openAlbumDetails();
+    }
+
+    AlbumListener albumListener = this::showAlbumDetail;
 }
 
 
