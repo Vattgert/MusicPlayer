@@ -7,6 +7,7 @@ import vattgert.player.musicplayer.di.AppModule;
 import vattgert.player.musicplayer.di.DaggerAppComponent;
 import vattgert.player.musicplayer.di.DataModule;
 import vattgert.player.musicplayer.di.LastFmApiModule;
+import vattgert.player.musicplayer.di.ParamsModule;
 import vattgert.player.musicplayer.di.SchedulerModule;
 
 
@@ -28,7 +29,6 @@ public class MusicPlayerApplication extends Application {
                 .appModule(new AppModule(this))
                 .dataModule(new DataModule())
                 .schedulerModule(new SchedulerModule())
-                .lastFmApiModule(new LastFmApiModule())
                 .build();
     }
 }

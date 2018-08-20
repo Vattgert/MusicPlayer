@@ -5,11 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.squareup.sqlbrite3.BriteContentResolver;
 import com.squareup.sqlbrite3.SqlBrite;
 
 import java.util.List;
+import java.util.Observer;
 import java.util.concurrent.Future;
 
 import javax.inject.Inject;
@@ -17,6 +19,7 @@ import javax.inject.Inject;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import vattgert.player.musicplayer.MusicPlayerApplication;
@@ -45,7 +48,7 @@ public class MusicDataSource implements DataSource{
     public MusicDataSource() {
         MusicPlayerApplication.getComponent().inject(this);
 
-        ContentResolver musicContentResolver = musicContentResolver = context.getContentResolver();
+        ContentResolver musicContentResolver = context.getContentResolver();
         SqlBrite sqlBrite = new SqlBrite.Builder().build();
         contentResolver = sqlBrite.wrapContentProvider(musicContentResolver, schedulerProvider.io());
 
@@ -58,7 +61,7 @@ public class MusicDataSource implements DataSource{
     public Flowable<List<Song>> getSongs() {
         return contentResolver.createQuery( musicExternalUri,
                 getSongProjection(),MediaStore.Audio.Media.IS_MUSIC + " != 0",
-                null, null, false)
+                null, MediaStore.Audio.Media.TITLE.concat(" ASC"), false)
                 .mapToList(songMapperFunction)
                 .toFlowable(BackpressureStrategy.BUFFER);
     }
@@ -73,19 +76,52 @@ public class MusicDataSource implements DataSource{
     }
 
     @Override
+    public Flowable<List<Song>> getSongsByAlbum(Album album) {
+        Log.wtf("MusicPlayer", "getSongsByAlbum enter");
+        return contentResolver.createQuery(musicExternalUri, getSongProjection(),
+                MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Media.ALBUM_ID.concat("=").concat(album.getAlbumId()),
+                null, null, false)
+                .mapToList(songMapperFunction)
+                .toFlowable(BackpressureStrategy.BUFFER);
+    }
+
+    public Flowable<List<Song>> getSongsByAlbumTest(String id) {
+        Log.wtf("MusicPlayer", "getSongsByAlbum enter");
+        return contentResolver.createQuery(musicExternalUri, getSongProjection(),
+                MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Media.ALBUM_ID.concat("=").concat(id),
+                null, null, false)
+                .mapToList(songMapperFunction)
+                .toFlowable(BackpressureStrategy.BUFFER);
+    }
+
+    @Override
     public Flowable<List<Album>> getAlbums(){
         return contentResolver.createQuery( albumExternalUri,
                 getAlbumProjection(),null,
-                null, null, false)
+                null, MediaStore.Audio.Albums.ALBUM.concat(" ASC"), false)
                 .mapToList(albumMapperFunction)
                 .toFlowable(BackpressureStrategy.BUFFER);
     }
 
     @Override
     public Flowable<Album> getAlbum(String albumId) {
-        return contentResolver.createQuery(albumExternalUri, getAlbumProjection(), null,
+        return contentResolver.createQuery(albumExternalUri, getAlbumProjection(),
+                MediaStore.Audio.Albums._ID.concat("=").concat(albumId),
                 null, null, false)
-                .mapToOne(albumMapperFunction).toFlowable(BackpressureStrategy.ERROR);
+                .mapToOne(albumMapperFunction)
+
+                .toFlowable(BackpressureStrategy.ERROR);
+    }
+
+    public Single<Album> getAlbumSingle(String albumId){
+        return contentResolver.createQuery(
+                MediaStore.Audio.Artists.Albums.getContentUri("external",
+                        Long.valueOf(albumId)),
+                getAlbumProjection(),
+                MediaStore.Audio.Albums._ID.concat("=").concat(albumId),
+                null, null, false)
+                .mapToOne(albumMapperFunction).singleOrError();
+
     }
 
     @Override
@@ -94,6 +130,34 @@ public class MusicDataSource implements DataSource{
                 getArtistProjection(),null,
                 null, null, false)
                 .mapToList(artistMapperFunction)
+                .toFlowable(BackpressureStrategy.BUFFER);
+    }
+
+    @Override
+    public Flowable<Artist> getArtistById(String artistId) {
+        return contentResolver.createQuery(albumExternalUri, getAlbumProjection(),
+                MediaStore.Audio.Artists._ID.concat("=").concat(artistId),
+                null, null, false)
+                .mapToOne(artistMapperFunction)
+                .toFlowable(BackpressureStrategy.ERROR);
+    }
+
+    @Override
+    public Flowable<List<Album>> getArtistAlbums(String artistId) {
+        return contentResolver.createQuery(MediaStore.Audio.Artists.Albums.getContentUri("external",
+                Long.valueOf(artistId)),
+                getAlbumProjection(), null,
+                null, MediaStore.Audio.Albums.ALBUM.concat(" ASC"), false)
+                .mapToList(albumMapperFunction)
+                .toFlowable(BackpressureStrategy.BUFFER);
+    }
+
+    @Override
+    public Flowable<List<Song>> getArtistSongs(String artistId) {
+        return contentResolver.createQuery( musicExternalUri,
+                getSongProjection(),MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Media.ARTIST_ID.concat("=").concat(artistId),
+                null, MediaStore.Audio.Media.TITLE.concat(" ASC"), false)
+                .mapToList(songMapperFunction)
                 .toFlowable(BackpressureStrategy.BUFFER);
     }
 

@@ -31,7 +31,6 @@ public class ArtistsPresenter extends AbstractPresenter implements ArtistContrac
                 .observeOn(schedulerProvider.ui())
                 .subscribe(artists -> {
                     if(view != null){
-                        Log.wtf("MusicPlayer", "Retrieve artist");
                         populateArtists(artists);
                     }
                 }, throwable -> {
@@ -41,15 +40,18 @@ public class ArtistsPresenter extends AbstractPresenter implements ArtistContrac
     }
 
     @Override
+    public void openArtistDetails(Artist artist) {
+        view.showArtistDetail(artist.getId());
+    }
+
+    @Override
     public void bind(ArtistContract.View view) {
-        Log.wtf("MusicPlayer", "ArtistView unbind");
         this.view = view;
     }
 
     @Override
     public void unbind() {
         getCompositeDisposable().clear();
-        Log.wtf("MusicPlayer", "ArtistView unbind");
         view = null;
     }
 

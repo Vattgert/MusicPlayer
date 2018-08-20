@@ -43,7 +43,7 @@ public class AlbumsPresenter extends AbstractPresenter implements AlbumsContract
 
     @Override
     public void openAlbumDetail(@NonNull Album album) {
-
+        view.showAlbumDetail(album.getAlbumId());
     }
 
     @Override

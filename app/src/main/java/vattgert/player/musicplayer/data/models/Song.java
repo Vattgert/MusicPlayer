@@ -1,5 +1,8 @@
 package vattgert.player.musicplayer.data.models;
 
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 public class Song {
     private String id;
     private String title;
@@ -57,6 +60,13 @@ public class Song {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public String getFormattedDuration(){
+        return String.format(Locale.ENGLISH, "%d:%02d%n",
+                TimeUnit.MILLISECONDS.toMinutes(duration),
+                TimeUnit.MILLISECONDS.toSeconds(duration) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration)));
     }
 
     public int getYear() {

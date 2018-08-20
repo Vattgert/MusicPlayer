@@ -33,7 +33,6 @@ public class SongsPresenter extends AbstractPresenter implements SongsContract.P
                 .observeOn(schedulerProvider.ui())
                 .subscribe(songs -> {
                     if(view != null){
-                        Log.wtf("MusicPlayer", "Retrieve songs");
                         populateSongs(songs);
                     }
                 }, throwable -> {
@@ -45,12 +44,10 @@ public class SongsPresenter extends AbstractPresenter implements SongsContract.P
     @Override
     public void bind(SongsContract.View view) {
         this.view = view;
-        Log.wtf("MusicPlayer", "SongsView bind");
     }
 
     @Override
     public void unbind() {
-        Log.wtf("MusicPlayer", "SongsView unbind");
         getCompositeDisposable().clear();
         view = null;
     }

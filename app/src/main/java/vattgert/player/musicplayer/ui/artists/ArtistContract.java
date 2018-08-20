@@ -9,10 +9,12 @@ import vattgert.player.musicplayer.data.models.Artist;
 public interface ArtistContract {
     interface Presenter extends BasePresenter<View>{
         void getArtists();
+        void openArtistDetails(Artist artist);
     }
 
     interface View extends BaseView{
         void showArtist(List<Artist> artists);
         void showNoArtist();
+        void showArtistDetail(String artistId);
     }
 }

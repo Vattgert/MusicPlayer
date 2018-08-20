@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,7 +10,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/main.appbar"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:fitsSystemWindows="true"
         >
@@ -28,7 +27,7 @@
             >
 
             <ImageView
-                android:id="@+id/imageViewAlbumArt"
+                android:id="@+id/imageViewArtistArt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -38,7 +37,7 @@
                 />
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbarAlbumDetail"
+                android:id="@+id/toolbarArtistDetail"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -49,7 +48,14 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewAlbumSongs"
+        android:id="@+id/recyclerViewArtistAlbums"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    <android.support.v7.widget.RecyclerView
+        app:layout_anchor="@id/recyclerViewArtistAlbums"
+        android:id="@+id/recyclerViewArtistSongs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

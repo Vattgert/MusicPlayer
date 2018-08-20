@@ -15,6 +15,9 @@ interface BaseSchedulerProvider{
 
     @NonNull
     Scheduler ui();
+
+    @NonNull
+    Scheduler newThread();
 }
 
 public class SchedulerProvider implements BaseSchedulerProvider {
@@ -37,5 +40,11 @@ public class SchedulerProvider implements BaseSchedulerProvider {
     @Override
     public Scheduler ui() {
         return AndroidSchedulers.mainThread();
+    }
+
+    @NonNull
+    @Override
+    public Scheduler newThread() {
+        return Schedulers.newThread();
     }
 }

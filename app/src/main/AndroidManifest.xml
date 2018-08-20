@@ -33,7 +33,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".ui.activities.AlbumDetailActivity"></activity>
+        <activity android:name=".ui.activities.AlbumDetailActivity" />
+        <activity android:name=".ui.activities.ArtistDetailActivity"></activity>
     </application>
 
 </manifest>

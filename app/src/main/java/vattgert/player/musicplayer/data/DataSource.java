@@ -12,8 +12,13 @@ import vattgert.player.musicplayer.data.models.Song;
 public interface DataSource {
     Flowable<List<Song>> getSongs();
     Flowable<Song> getSongById(String songId);
+    Flowable<List<Song>> getSongsByAlbum(Album album);
 
     Flowable<List<Album>> getAlbums();
     Flowable<Album> getAlbum(String albumId);
     Flowable<List<Artist>> getArtists();
+
+    Flowable<Artist> getArtistById(String artistId);
+    Flowable<List<Album>> getArtistAlbums(String artistId);
+    Flowable<List<Song>> getArtistSongs(String artistId);
 }

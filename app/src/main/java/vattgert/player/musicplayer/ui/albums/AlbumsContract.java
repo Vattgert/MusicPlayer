@@ -17,6 +17,6 @@ public interface AlbumsContract {
     interface View extends BaseView{
         void showAlbums(List<Album> albums);
         void showNoAlbums();
-        void showAlbumDetail();
+        void showAlbumDetail(String albumId);
     }
 }
